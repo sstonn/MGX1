@@ -41,7 +41,7 @@ flutter:
   assets:
     - assets/email.png
     - assets/flutter-icon.png
-
+    - assets/dark_grunge_bk.jpg
   fonts:
   - family: mermaid
     fonts:
