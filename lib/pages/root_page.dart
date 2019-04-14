@@ -21,7 +21,7 @@ enum AuthStatus {
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = "";
-
+  bool _isEmailVerified = false;
   @override
   void initState() {
     super.initState();
@@ -35,7 +35,6 @@ class _RootPageState extends State<RootPage> {
       });
     });
   }
-
   void _onLoggedIn() {
     widget.auth.getCurrentUser().then((user){
       setState(() {

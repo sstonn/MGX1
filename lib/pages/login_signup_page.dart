@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:loginandsignup/services/authentication.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loginandsignup/loader/flip_loader.dart';
+import 'package:loginandsignup/model/user.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'dart:async';
 class LoginSignUpPage extends StatefulWidget {
-  LoginSignUpPage({this.auth, this.onSignedIn});
-
+  LoginSignUpPage({Key key,this.auth, this.userId,this.onSignedIn}): super(key: key);
   final BaseAuth auth;
   final VoidCallback onSignedIn;
-
+  final String userId;
   @override
   State<StatefulWidget> createState() => new _LoginSignUpPageState();
 }
@@ -15,8 +17,12 @@ class LoginSignUpPage extends StatefulWidget {
 enum FormMode { LOGIN, SIGNUP }
 
 class _LoginSignUpPageState extends State<LoginSignUpPage> {
+  List<user> _userList;
+  final FirebaseDatabase _database=FirebaseDatabase.instance;
   final _formKey = new GlobalKey<FormState>();
-
+  StreamSubscription<Event> _onUserAddedSubscription;
+  StreamSubscription<Event> _onUserChangedSubscription;
+  Query _userQuery;
   String _email;
   String _password;
   String _name;
@@ -54,6 +60,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
         } else {
           userId = await widget.auth.signUp(_email, _password);
           widget.auth.sendEmailVerification();
+          _addNewUser(_name);
           _showVerifyEmailSentDialog();
           print('Signed up user: $userId');
         }
@@ -84,8 +91,58 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     _errorMessage = "";
     _isLoading = false;
     super.initState();
+    _userList=new List();
+    _userQuery=_database
+    .reference()
+    .child("user")
+    .orderByChild("userId")
+    .equalTo(widget.userId);
+    _onUserAddedSubscription=_userQuery.onChildAdded.listen(_onEntryAdded);
+    _onUserChangedSubscription=_userQuery.onChildChanged.listen(_onEntryChanged);
+  }
+  @override
+  void dispose() {
+    _onUserAddedSubscription.cancel();
+    _onUserChangedSubscription.cancel();
+    super.dispose();
+  }
+  _onEntryChanged(Event event) {
+    var oldEntry = _userList.singleWhere((entry) {
+      return entry.key == event.snapshot.key;
+    });
+    setState(() {
+      _userList[_userList.indexOf(oldEntry)] = user.fromSnapshot(event.snapshot);
+    });
   }
 
+  _onEntryAdded(Event event) {
+    setState(() {
+      _userList.add(user.fromSnapshot(event.snapshot));
+    });
+  }
+  _addNewUser(String UserName) {
+    if (UserName.length > 0) {
+
+      user myuser = new user(_name, _email, _password, widget.userId);
+      _database.reference().child("user").push().set(myuser.toJson());
+    }
+  }
+
+  _updateTodo(user myuser){
+    //Toggle completed
+    if (myuser != null) {
+      _database.reference().child("todo").child(myuser.key).set(myuser.toJson());
+    }
+  }
+
+  _deleteTodo(String userId, int index) {
+    _database.reference().child("todo").child(userId).remove().then((_) {
+      print("Delete $userId successful");
+      setState(() {
+        _userList.removeAt(index);
+      });
+    });
+  }
   void _changeFormToSignUp() {
     _formKey.currentState.reset();
     _errorMessage = "";
@@ -101,7 +158,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       _formMode = FormMode.LOGIN;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     _isIos = Theme.of(context).platform == TargetPlatform.iOS;
@@ -211,7 +267,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       },
     );
   }
-
   Widget _showBody(){
     return new Container(
         padding: EdgeInsets.all(16.0),
