@@ -202,66 +202,88 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           child: Container(
-            padding: EdgeInsets.only(right: 16.0),
+            padding: EdgeInsets.only(top: 20.0),
             height: 250,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(75),
-                    bottomLeft: Radius.circular(75),
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10)
-                )
-            ),
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 20.0),
-                CircleAvatar(radius: 55, backgroundColor: Colors.grey.shade200, child: Image.asset('assets/email.png', width: 60,),),
-                SizedBox(width: 20.0),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Vui lòng xác nhận tài khoản", style: TextStyle(fontFamily: "bebas-neue"),),
-                      SizedBox(height: 10.0),
-                      Flexible(
-                        child: Text(
-                            "Một email với đường link xác nhận tài khoản đã được gửi tới hòm thư của bạn, vui lòng kiểm tra hòm thư, trong trường hợp bạn chưa nhận được email xin vui lòng ấn 'Gửi lại'"
-                            ,style: TextStyle(fontFamily: "bebas-neue"),),
+                    bottomRight: Radius.circular(10))),
+            child: Column(children: <Widget>[
+              Expanded(
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(width: 20.0),
+                    CircleAvatar(
+                      radius: 55,
+                      backgroundColor: Colors.grey.shade200,
+                      child: Image.asset(
+                        'assets/email.png',
+                        width: 60,
                       ),
-                      SizedBox(height: 10.0),
-                      Row(children: <Widget>[
-                        Expanded(
-                          child: RaisedButton(
-                            child: Text("Bỏ qua"),
-                            color: Colors.red,
-                            colorBrightness: Brightness.dark,
-                            onPressed: (){
-                              _changeFormToLogin();
-                              Navigator.pop(context);
-                              },
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                    ),
+                    SizedBox(width: 20.0),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Vui lòng xác nhận tài khoản",
+                            style:
+                            TextStyle(fontFamily: "oscinebold", fontSize: 16),
                           ),
-                        ),
-                        SizedBox(width: 10.0),
-                        Expanded(
-                          child: RaisedButton(
-                            child: Text("Gửi lại"),
-                            color: Color(0xFF212121),
-                            colorBrightness: Brightness.dark,
-                            onPressed: (){
-                              widget.auth.sendEmailVerification();
-                              },
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                          SizedBox(height: 10.0),
+                          Flexible(
+                            child: Text(
+                              "Một email với đường link xác nhận tài khoản đã được gửi tới hòm thư của bạn",
+                              style: TextStyle(fontFamily: "oscinebold"),
+                            ),
                           ),
+                          //SizedBox(height: 10.0),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text(
+                          "Bỏ qua",
+                          style: TextStyle(fontFamily: "oscinebold"),
                         ),
-                      ],)
+                        color: Colors.red,
+                        colorBrightness: Brightness.dark,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                      ),
+                      //SizedBox(width: 10.0),
+                      RaisedButton(
+                        child: Text(
+                          "Gửi lại",
+                          style: TextStyle(fontFamily: "oscinebold"),
+                        ),
+                        color: Color(0xFF212121),
+                        colorBrightness: Brightness.dark,
+                        onPressed: () {
+                          widget.auth.sendEmailVerification();
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
                     ],
-                  ),
-                )
-              ],
-            ),
+                  ))
+            ]),
           ),
         );
       },
@@ -324,7 +346,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       child: _formMode==FormMode.SIGNUP?TextFormField(
         keyboardType: TextInputType.text,
         style: TextStyle(
-            fontFamily: "bebas-neue",
+            fontFamily: "oscinebold",
             fontSize: 16.0,
             color: Colors.white),
         decoration: InputDecoration(
@@ -336,7 +358,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           ),
           hintText: "Username",
           hintStyle: TextStyle(
-              fontFamily: "bebas-neue",
+              fontFamily: "oscinebold",
               fontSize: 17.0,
               color: Colors.white30),
         ),
@@ -360,7 +382,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         style: TextStyle(
-            fontFamily: "bebas-neue",
+            fontFamily: "oscinebold",
             fontSize: 16.0,
             color: Colors.white),
         decoration: InputDecoration(
@@ -372,7 +394,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           ),
           hintText: "Email Address",
           hintStyle: TextStyle(
-              fontFamily: "bebas-neue", fontSize: 17.0,
+              fontFamily: "oscinebold", fontSize: 17.0,
               color: Colors.white30),
         ),
         validator: (value){
@@ -396,7 +418,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       child: TextFormField(
         obscureText: _obscureTextLogin,
         style: TextStyle(
-            fontFamily: "bebas-neue",
+            fontFamily: "oscinebold",
             fontSize: 16.0,
             color: Colors.white),
         decoration: InputDecoration(
@@ -408,7 +430,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           ),
           hintText: "Password",
           hintStyle: TextStyle(
-              fontFamily: "bebas-neue",
+              fontFamily: "oscinebold",
               fontSize: 17.0,
               color: Colors.white30,
           ),
@@ -439,10 +461,10 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     return new FlatButton(
       child: _formMode == FormMode.LOGIN
           ? new Text('Create an account',
-              style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300,fontFamily: "bebas-neue",color: Colors.white))
+              style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300,fontFamily: "oscinebold",color: Colors.white))
           : new Text('Have an account? Sign in',
               style:
-                  new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300,fontFamily: "bebas-neue",color: Colors.white)),
+                  new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300,fontFamily: "oscinebold",color: Colors.white)),
       onPressed: _formMode == FormMode.LOGIN
           ? _changeFormToSignUp
           : _changeFormToLogin,
@@ -488,12 +510,12 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
               style: TextStyle(
                   color: Color(0xFF212121),
                   fontSize: 25.0,
-                  fontFamily: "bebas-neue",)):Text(
+                  fontFamily: "oscinebold",)):Text(
               "LOG IN",
               style: TextStyle(
                 color: Color(0xFF212121),
                 fontSize: 25.0,
-                fontFamily: "bebas-neue",),
+                fontFamily: "oscinebold",),
             ),
           ),
           onPressed: () {

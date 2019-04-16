@@ -49,4 +49,15 @@ flutter:
   - family: bebas-neue
     fonts:
     - asset: assets/BebasNeue-Regular.ttf
-
+  - family: biosan
+    fonts:
+    - asset: assets/biosans.ttf
+  - family: CustomIcons
+    fonts:
+    - asset: assets/custom_icons.ttf
+  - family: oscine
+    fonts:
+    - asset: assets/oscine.otf
+  - family: oscinebold
+    fonts:
+    - asset: assets/oscinebold.otf
